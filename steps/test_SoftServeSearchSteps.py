@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
+import time
 
 
 ##########################################
@@ -27,6 +28,10 @@ class LayoutPage():
     def clickSearchBtn(self):
         self.find_element(By.CSS_SELECTOR, '.menu__search-image').click()
 
+    def switch_to_new_tab(self):
+        time.sleep(3)
+        self.switch_to.window(self.window_handles[-1])
+
 
 class HomePage(LayoutPage):
     def __init__(self, driver):
@@ -44,6 +49,20 @@ class SearchPage(LayoutPage):
         self.find_element(By.CSS_SELECTOR, '.form-input__text').send_keys(text)
         self.find_element(By.CSS_SELECTOR, '.form-input__text').send_keys(Keys.ENTER)
 
+    def clickSearchResult(self, text):
+        time.sleep(3)
+        searchResults = self.find_elements(By.XPATH, '//div[@class="search-page__list"]//h3')
+        for result in searchResults:
+            if result.text == text:
+                result.click()
+                break
+
+class AcademyPage(LayoutPage):
+    def __init__(self, driver):
+        super().__init__(driver)
+
+    def getSubtitleText(self):
+        return self.find_element(By.CSS_SELECTOR, '.sub-title').text
 
 ##########################################
 ## Step definitions
@@ -69,7 +88,7 @@ def test_setUp(browser):
 def main_page_title(browser):
     param = 'SoftServe | Software Development & Digital Services Company'
     print(f"Im on SoftSearch main page with title '{param}'")
-    assert HomePage.getPageTitle(browser) == 'SoftServe | Software Development & Digital Services Company'
+    assert HomePage.getPageTitle(browser) == param
 
 
 @when("I click on the search icon")
@@ -91,12 +110,16 @@ def type_search_term(browser):
 def click_search_result(browser):
     param = 'IT Academy'
     print(f"I click on '{param}' search result in Search Page")
+    SearchPage.waitUntilElementIsVisible(browser, (By.CSS_SELECTOR, '.search-page__list'))
+    SearchPage.clickSearchResult(browser, param)
 
 
 @then("I should see 'SoftServe Academy' page title")
 def check_page_title(browser):
     param = 'SoftServe Academy'
     print(f"I should see '{param}' page title")
+    SearchPage.switch_to_new_tab(browser)
+    assert AcademyPage.getPageTitle(browser) == param
 
 
 @then("I should see 'Empowering learning solutions to start your career in IT.' subtitle on SoftServe Academy page")
@@ -104,3 +127,7 @@ def check_page_subtitle(browser):
     param = 'Empowering learning solutions to start your career in IT.'
     print(
         f"I should see '{param}' subtitle on SoftServe Academy page")
+    AcademyPage.waitUntilElementIsVisible(browser, (By.CSS_SELECTOR, '.sub-title'))
+    subtitle = AcademyPage.getSubtitleText(browser)
+    assert subtitle == param
+    print(f"Subtitle displayed: {subtitle}")
