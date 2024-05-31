@@ -1,23 +1,9 @@
-import pytest
 from pytest_bdd import *
 from pytest_bdd import parsers
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-from pages.LayoutPage import LayoutPage
-from pages.HomePage import HomePage
-from pages.SearchPage import SearchPage
-from pages.AcademyPage import AcademyPage
-from selenium.webdriver.common.by import By
-
-
-@pytest.fixture
-def browser():
-    driver = webdriver.Chrome()
-    driver.get("https://www.softserveinc.com/")
-    yield driver
-    driver.quit()
+from UI.pages.HomePage import HomePage
+from UI.pages.SearchPage import SearchPage
+from UI.pages.AcademyPage import AcademyPage
+from conftest import browser
 
 
 @scenario("../features/SoftServeSearch.feature", "Search for Academy Page")
