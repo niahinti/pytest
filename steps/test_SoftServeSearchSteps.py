@@ -28,42 +28,39 @@ def test_setUp(browser):
 @given(parsers.parse("Im on SoftSearch main page with title \"{title}\""))
 def main_page_title(browser, title):
     print(f"Im on SoftSearch main page with title '{title}'")
-    assert HomePage.getPageTitle(browser) == title
+    assert HomePage(browser).getPageTitle() == title
 
 
 @when(parsers.parse("I click on the search icon"))
 def click_search_icon(browser):
     print("I click on the search icon")
-    HomePage.clickSearchBtn(browser)
-    SearchPage.waitUntilElementIsVisible(browser, (By.CSS_SELECTOR, '.form-input__text'))
-    assert SearchPage.getPageTitle(browser) == 'Search | SoftServe'
+    HomePage(browser).clickSearchBtn()
+    assert SearchPage(browser).getPageTitle() == 'Search | SoftServe'
 
 
 @when(parsers.parse("I type \"{searchTerm}\" in the search box in Search Page"))
 def type_search_term(browser, searchTerm):
     print(f"I type '{searchTerm}' in the search box in Search Page")
-    SearchPage.inputSearch(browser, searchTerm)
+    SearchPage(browser).inputSearch(searchTerm)
 
 
 @when(parsers.parse("I click on \"{result}\" search result in Search Page"))
 def click_search_result(browser, result):
     print(f"I click on '{result}' search result in Search Page")
-    SearchPage.waitUntilElementIsVisible(browser, (By.CSS_SELECTOR, '.search-page__list'))
-    SearchPage.clickSearchResult(browser, result)
+    SearchPage(browser).clickSearchResult(result)
 
 
 @then(parsers.parse("I should see \"{title}\" page title"))
 def check_page_title(browser, title):
     param = 'SoftServe Academy'
     print(f"I should see '{title}' page title")
-    SearchPage.switch_to_new_tab(browser)
-    assert AcademyPage.getPageTitle(browser) == title
+    SearchPage(browser).switch_to_new_tab()
+    assert AcademyPage(browser).getPageTitle() == title
 
 
 @then(parsers.parse("I should see \"{subtitle}\" subtitle on SoftServe Academy page"))
 def check_page_subtitle(browser, subtitle):
     print(f"I should see '{subtitle}' subtitle on SoftServe Academy page")
-    AcademyPage.waitUntilElementIsVisible(browser, (By.CSS_SELECTOR, '.sub-title'))
-    actual_subtitle = AcademyPage.getSubtitleText(browser)
+    actual_subtitle = AcademyPage(browser).getSubtitleText()
     assert actual_subtitle == subtitle
     print(f"Subtitle displayed: {actual_subtitle}")

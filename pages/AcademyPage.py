@@ -11,4 +11,5 @@ class AcademyPage(LayoutPage):
         super().__init__(driver)
 
     def getSubtitleText(self):
-        return self.find_element(By.CSS_SELECTOR, '.sub-title').text
+        self.waitUntilElementIsVisible((By.CSS_SELECTOR, '.sub-title'))
+        return self.driver.find_element(By.CSS_SELECTOR, '.sub-title').text

@@ -10,14 +10,15 @@ class LayoutPage():
         self.driver = driver
 
     def getPageTitle(self):
-        return self.title
+        return self.driver.title
 
     def waitUntilElementIsVisible(self: object, locator: tuple):
-        return WebDriverWait(self, 10).until(EC.visibility_of_element_located(locator))
+        return WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(locator))
 
     def clickSearchBtn(self):
-        self.find_element(By.CSS_SELECTOR, '.menu__search-image').click()
+        self.driver.find_element(By.CSS_SELECTOR, '.menu__search-image').click()
+        self.waitUntilElementIsVisible((By.CSS_SELECTOR, '.form-input__text'))
 
     def switch_to_new_tab(self):
         time.sleep(3)
-        self.switch_to.window(self.window_handles[-1])
+        self.driver.switch_to.window(self.driver.window_handles[-1])
