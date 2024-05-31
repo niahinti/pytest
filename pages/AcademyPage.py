@@ -10,6 +10,10 @@ class AcademyPage(LayoutPage):
     def __init__(self, driver):
         super().__init__(driver)
 
+    locators = {
+        "subtitle": (By.CSS_SELECTOR, '.sub-title')
+    }
+
     def getSubtitleText(self):
-        self.waitUntilElementIsVisible((By.CSS_SELECTOR, '.sub-title'))
-        return self.driver.find_element(By.CSS_SELECTOR, '.sub-title').text
+        self.waitUntilElementIsVisible(self.locators["subtitle"])
+        return self.driver.find_element(*self.locators["subtitle"]).text
