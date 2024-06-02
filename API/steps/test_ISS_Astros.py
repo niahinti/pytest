@@ -22,9 +22,9 @@ def send_get_request(global_state, response):
     api(response).sendGetRequest(global_state['api_url'])
 
 
-@then(parsers.parse("I should get a status code \"{code}\""))
+@then(parsers.parse("I should get a status code \"{code:d}\""))
 def check_status_code(response, code):
-    validate(response).validateStatusCode(int(code))
+    validate(response).validateStatusCode(code)
 
 
 @then(parsers.parse("Name \"{name}\" should not be on the \"{station}\" station"))
