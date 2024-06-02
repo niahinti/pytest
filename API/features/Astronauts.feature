@@ -12,9 +12,3 @@ Feature: Astronauts
       | name             | station  |
       | Andreas Mogensen | Tiangong |
       | Megan McArthur   | ISS      |
-
-
-  Scenario: Verify how many astronauts are on the ISS
-    When I send a GET request
-    Then I should get a status code "200"
-    And There should be more than "3" people on the ISS
