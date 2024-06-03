@@ -1,7 +1,7 @@
 Feature: Astronauts
 
   Background:
-    Given The url to get austronaut information is "http://api.open-notify.org/astros.json"
+    Given The url to get astronaut information is "http://api.open-notify.org/astros.json"
 
   Scenario Outline: Verify astronaut is not on the ISS
     When I send a GET request

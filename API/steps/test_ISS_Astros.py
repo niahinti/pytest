@@ -12,7 +12,7 @@ def test_setUp(global_state, response):
     pass
 
 
-@given(parsers.parse("The url to get austronaut information is \"{url}\""))
+@given(parsers.parse("The url to get astronaut information is \"{url}\""))
 def set_api_url(global_state, url):
     global_state['api_url'] = url
 
